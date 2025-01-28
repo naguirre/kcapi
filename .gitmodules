@@ -1,4 +1,4 @@
 [submodule "kcapi-sys"]
 	path = kcapi-sys
-	url = https://github.com/puru1761/kcapi-sys.git
-	branch = master
+	url = https://github.com/naguirre/kcapi-sys.git
+	branch = main
