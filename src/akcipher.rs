@@ -69,6 +69,7 @@
 //!
 
 use std::{convert::TryInto, ffi::CString};
+use libc::size_t;
 
 use crate::{KcapiError, KcapiResult, VMSplice, ACCESS_HEURISTIC, INIT_AIO};
 
@@ -261,9 +262,9 @@ impl KcapiAKCipher {
             let ret = kcapi_sys::kcapi_akcipher_encrypt(
                 self.handle,
                 pt.as_ptr(),
-                pt.len() as kcapi_sys::size_t,
+                pt.len() as size_t,
                 ct.as_mut_ptr(),
-                ct.len() as kcapi_sys::size_t,
+                ct.len() as size_t,
                 access as i32,
             );
             if ret < 0 {
@@ -302,9 +303,9 @@ impl KcapiAKCipher {
             let ret = kcapi_sys::kcapi_akcipher_decrypt(
                 self.handle,
                 ct.as_ptr(),
-                ct.len() as kcapi_sys::size_t,
+                ct.len() as size_t,
                 pt.as_mut_ptr(),
-                pt.len() as kcapi_sys::size_t,
+                pt.len() as size_t,
                 access as ::std::os::raw::c_int,
             );
             if ret < 0 {
@@ -341,9 +342,9 @@ impl KcapiAKCipher {
             let ret = kcapi_sys::kcapi_akcipher_sign(
                 self.handle,
                 message.as_ptr(),
-                message.len() as kcapi_sys::size_t,
+                message.len() as size_t,
                 sig.as_mut_ptr(),
-                sig.len() as kcapi_sys::size_t,
+                sig.len() as size_t,
                 access as ::std::os::raw::c_int,
             );
             if ret < 0 {
@@ -385,9 +386,9 @@ impl KcapiAKCipher {
             let ret = kcapi_sys::kcapi_akcipher_verify(
                 self.handle,
                 inp.as_ptr(),
-                inp.len() as kcapi_sys::size_t,
+                inp.len() as size_t,
                 out.as_mut_ptr(),
-                out.len() as kcapi_sys::size_t,
+                out.len() as size_t,
                 access as ::std::os::raw::c_int,
             );
             if ret < 0 {

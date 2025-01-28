@@ -53,6 +53,7 @@
 //!
 
 use std::{convert::TryInto, ffi::CString};
+use libc::size_t;
 
 use crate::{skcipher::AES_BLOCKSIZE, KcapiError, KcapiResult, VMSplice};
 
@@ -471,9 +472,9 @@ impl KcapiAEAD {
             };
             self.inbuflen = get_inbuflen(
                 self.handle,
-                inlen as kcapi_sys::size_t,
-                self.data.assoclen() as kcapi_sys::size_t,
-                self.data.taglen() as kcapi_sys::size_t,
+                inlen as size_t,
+                self.data.assoclen() as size_t,
+                self.data.taglen() as size_t,
             )
             .try_into()
             .expect("Failed to convert u64 into usize");
@@ -496,9 +497,9 @@ impl KcapiAEAD {
             };
             self.outbuflen = get_outbuflen(
                 self.handle,
-                outlen as kcapi_sys::size_t,
-                self.data.assocdata.len() as kcapi_sys::size_t,
-                self.data.tagsize as kcapi_sys::size_t,
+                outlen as size_t,
+                self.data.assocdata.len() as size_t,
+                self.data.tagsize as size_t,
             )
             .try_into()
             .expect("Failed to convert u64 into usize");
@@ -640,7 +641,7 @@ impl KcapiAEAD {
     /// ```
     pub fn set_assocdata(&mut self, assocdata: Vec<u8>) {
         unsafe {
-            kcapi_sys::kcapi_aead_setassoclen(self.handle, assocdata.len() as kcapi_sys::size_t);
+            kcapi_sys::kcapi_aead_setassoclen(self.handle, assocdata.len() as size_t);
         }
         self.data.set_assocdata(assocdata);
     }
@@ -738,10 +739,10 @@ impl KcapiAEAD {
             let ret = kcapi_sys::kcapi_aead_encrypt(
                 self.handle,
                 outbuf.as_ptr(),
-                self.inbuflen as kcapi_sys::size_t,
+                self.inbuflen as size_t,
                 iv.as_ptr(),
                 outbuf.as_mut_ptr(),
-                self.outbuflen as kcapi_sys::size_t,
+                self.outbuflen as size_t,
                 access as ::std::os::raw::c_int,
             );
             if ret < 0 {
@@ -841,10 +842,10 @@ impl KcapiAEAD {
             let ret = kcapi_sys::kcapi_aead_decrypt(
                 self.handle,
                 outbuf.as_ptr(),
-                self.inbuflen as kcapi_sys::size_t,
+                self.inbuflen as size_t,
                 iv.as_ptr(),
                 outbuf.as_mut_ptr(),
-                self.outbuflen as kcapi_sys::size_t,
+                self.outbuflen as size_t,
                 access as ::std::os::raw::c_int,
             );
             if ret < 0 {
